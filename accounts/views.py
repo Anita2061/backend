@@ -1,12 +1,57 @@
+import hmac
+import hashlib
+import base64
+import uuid
+from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import SignupSerializer
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def initiate_esewa_payment(request):
+    amount = request.data.get('amount')
+    items = request.data.get('items', [])
+    name = request.data.get('name')
+    phone = request.data.get('phone')
+    location = request.data.get('location')
+
+    print(f"DEBUG: eSewa payment initiated for amount: {amount} by user {request.user.username}")
+    
+    transaction_uuid = str(uuid.uuid4())
+    product_code = "EPAYTEST"
+    secret_key = "8gBm/:&EnhH.1/q" 
+
+    # Create a pending order in MongoDB
+    try:
+        from .services import create_order
+        # We pass status="pending" or handle it in create_order. 
+        # By default create_order sets "pending".
+        create_order(str(request.user.id), items, name, phone, location, float(amount))
+    except Exception as e:
+        print(f"Failed to create pending order for eSewa: {e}")
+        # We continue anyway to let the user pay, or we could return error.
+        # Better to have the order record.
+
+    data_to_sign = f"total_amount={amount},transaction_uuid={transaction_uuid},product_code={product_code}"
+    
+    secret_key_bytes = secret_key.encode('utf-8')
+    data_bytes = data_to_sign.encode('utf-8')
+    
+    hash_obj = hmac.new(secret_key_bytes, data_bytes, hashlib.sha256)
+    signature = base64.b64encode(hash_obj.digest()).decode('utf-8')
+
+    return Response({
+        "signature": signature,
+        "transaction_uuid": transaction_uuid,
+        "amount": amount,
+        "product_code": product_code
+    })
 
 @api_view(['POST'])
 def signup(request):
@@ -167,3 +212,5 @@ def me(request):
             "email": user.email
         }
     })
+    
+    

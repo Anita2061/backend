@@ -21,11 +21,8 @@ def create_order(user_id: str, items: list[dict], name: str, phone: str, locatio
     }
     result = orders_collection.insert_one(order_data)
     
-    # Clear cart after successful order
-    carts_collection.update_one(
-        {"user_id": user_id},
-        {"$set": {"items": [], "updated_at": _now()}}
-    )
+    # Note: Cart clearing is now handled by the frontend/caller 
+    # to support partial item selection.
     
     order_data["_id"] = str(result.inserted_id)
     return serialize_mongo_doc(order_data)

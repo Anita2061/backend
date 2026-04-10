@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from accounts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')),
+    # accounts/urls.py
+path('create-esewa-payment/', views.initiate_esewa_payment, name='esewa_initiate'),
 ]

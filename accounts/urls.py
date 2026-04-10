@@ -1,14 +1,14 @@
 from django.urls import path
-from .views import signup, login_view, me, get_cart_view, update_cart_view, create_order_view, get_products_view, get_orders_view
-from .services import create_user_in_mongo
+from . import views
 
 urlpatterns = [
-    path('signup/', signup),
-    path('login/', login_view),
-    path('me/', me),
-    path('cart/', get_cart_view),
-    path('cart/update/', update_cart_view),
-    path('checkout/', create_order_view),
-    path('products/', get_products_view),
-    path('orders/', get_orders_view),
+    path('signup/', views.signup),
+    path('login/', views.login_view),
+    path('me/', views.me),
+    path('cart/', views.get_cart_view),
+    path('cart/update/', views.update_cart_view),
+    path('checkout/', views.create_order_view),
+    path('products/', views.get_products_view),
+    path('orders/', views.get_orders_view),
+    path('create-esewa-payment/', views.initiate_esewa_payment, name='esewa_initiate'),
 ]

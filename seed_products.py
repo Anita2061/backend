@@ -11,10 +11,27 @@ sys.path.append(str(backend_dir))
 load_dotenv(dotenv_path=backend_dir / ".env")
 
 def get_product_data():
-    frontend_data_path = backend_dir.parent / "src" / "data" / "Product.js"
+    candidate_paths = [
+        backend_dir.parent / "Frontend" / "src" / "data" / "Product.js",
+        backend_dir.parent / "src" / "data" / "Product.js",
+    ]
+
+    frontend_data_path = next((path for path in candidate_paths if path.exists()), None)
+    if frontend_data_path is None:
+        search_results = list(backend_dir.parent.rglob("Product.js"))
+        frontend_data_path = next(
+            (path for path in search_results if "src" in str(path.parts) and "data" in str(path.parts)),
+            None,
+        )
+
+    if frontend_data_path is None:
+        raise FileNotFoundError(
+            "Could not locate frontend product data file. Expected Product.js under a Frontend/src/data or src/data path."
+        )
+
     with open(frontend_data_path, "r", encoding="utf-8") as f:
         content = f.read()
-    
+
     products = []
     
     blocks = content.split('{')
