@@ -117,9 +117,17 @@ MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "project_db")
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "https://frontend-git-main-anita2061s-projects.vercel.app",
 ]
 
+# Add Vercel frontend URL from environment
+vercel_frontend = os.getenv("VERCEL_FRONTEND_URL", "")
+if vercel_frontend and vercel_frontend not in CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS.append(vercel_frontend)
+
+# Add any custom frontend URL
 frontend_url = os.getenv("FRONTEND_URL", "")
 if frontend_url and frontend_url not in CORS_ALLOWED_ORIGINS:
     CORS_ALLOWED_ORIGINS.append(frontend_url)
@@ -129,8 +137,16 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "https://frontend-git-main-anita2061s-projects.vercel.app",
 ]
+
+if vercel_frontend and vercel_frontend not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append(vercel_frontend)
+
+if frontend_url and frontend_url not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append(frontend_url)
 
 # DRF defaults (keep simple for now)
 REST_FRAMEWORK = {
