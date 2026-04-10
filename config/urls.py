@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')),
     # accounts/urls.py
-path('create-esewa-payment/', views.initiate_esewa_payment, name='esewa_initiate'),
+# path('create-esewa-payment/', views.initiate_esewa_payment, name='esewa_initiate'),
 ]
+
+

@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from datetime import timedelta
 
 load_dotenv(Path(__file__).resolve().parent.parent / '.env')
-FRONTEND=os.getenv("FRONTEND")
+# FRONTEND=os.getenv("FRONTEND")
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Token stays valid for 24 hours
@@ -78,7 +78,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = ["FRONTEND", "http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+ALLOWED_HOSTS = ['https://backend-mg40.onrender.com']
 
 ROOT_URLCONF = 'config.urls'
 
@@ -110,13 +111,16 @@ DATABASES = {
     }
 }
 
-# MongoDB (PyMongo) config used by core.mongo
+# DB (PyMongo) config used by core.mongo
 MONGO_URI = os.getenv("MONGO_URI", "")
 MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "project_db")
 
 # CORS (dev)
+CORS_ALLOW_ALL_ORIGINS = "https://frontend-theta-eight-79.vercel.app/",
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = ["https://frontend-theta-eight-79.vercel.app/"]
 
 # DRF defaults (keep simple for now)
 REST_FRAMEWORK = {
