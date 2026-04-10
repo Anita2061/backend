@@ -40,17 +40,17 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ["ALLOWED_HOSTS", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
+if render_hostname:
+    ALLOWED_HOSTS.append(render_hostname)
 
 extra_allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
 if extra_allowed_hosts:
     ALLOWED_HOSTS.extend(
         [host.strip() for host in extra_allowed_hosts.split(",") if host.strip()]
     )
-
-render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
-if render_hostname:
-    ALLOWED_HOSTS.append(render_hostname)
 
 
 # Application definition
@@ -78,8 +78,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = ["https://frontend-git-main-anita2061s-projects.vercel.app/"]
-ALLOWED_HOSTS = ['https://backend-mg40.onrender.com', 'localhost', '127.0.0.1']
 
 ROOT_URLCONF = 'config.urls'
 
@@ -115,12 +113,24 @@ DATABASES = {
 MONGO_URI = os.getenv("MONGO_URI", "")
 MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "project_db")
 
-# CORS (dev)
-CORS_ALLOW_ALL_ORIGINS = "https://frontend-git-main-anita2061s-projects.vercel.app/",
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://frontend-git-main-anita2061s-projects.vercel.app",
+]
+
+frontend_url = os.getenv("FRONTEND_URL", "")
+if frontend_url and frontend_url not in CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS.append(frontend_url)
+
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ["https://frontend-git-main-anita2061s-projects.vercel.app/"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://frontend-git-main-anita2061s-projects.vercel.app",
+]
 
 # DRF defaults (keep simple for now)
 REST_FRAMEWORK = {
