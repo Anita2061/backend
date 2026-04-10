@@ -78,7 +78,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = ["https://frontend-git-main-anita2061s-projects.vercel.app"]
+CORS_ALLOWED_ORIGINS = ["https://frontend-git-main-anita2061s-projects.vercel.app/"]
 ALLOWED_HOSTS = ['https://backend-mg40.onrender.com', 'localhost', '127.0.0.1']
 
 ROOT_URLCONF = 'config.urls'
@@ -116,11 +116,11 @@ MONGO_URI = os.getenv("MONGO_URI", "")
 MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "project_db")
 
 # CORS (dev)
-CORS_ALLOW_ALL_ORIGINS = "https://frontend-delta-sooty-87.vercel.app/products",
+CORS_ALLOW_ALL_ORIGINS = "https://frontend-git-main-anita2061s-projects.vercel.app/",
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ["https://frontend-delta-sooty-87.vercel.app/products"]
+CSRF_TRUSTED_ORIGINS = ["https://frontend-git-main-anita2061s-projects.vercel.app/"]
 
 # DRF defaults (keep simple for now)
 REST_FRAMEWORK = {
