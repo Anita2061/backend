@@ -78,8 +78,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = [""]
-ALLOWED_HOSTS = ['https://backend-mg40.onrender.com']
+CORS_ALLOWED_ORIGINS = ["https://frontend-git-main-anita2061s-projects.vercel.app"]
+ALLOWED_HOSTS = ['https://backend-mg40.onrender.com', 'localhost', '127.0.0.1']
 
 ROOT_URLCONF = 'config.urls'
 
