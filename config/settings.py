@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 from datetime import timedelta
 
 load_dotenv(Path(__file__).resolve().parent.parent / '.env')
+FRONTEND=os.getenv("FRONTEND")
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Token stays valid for 24 hours
@@ -39,7 +40,7 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["ALLOWED_HOSTS", "127.0.0.1", "localhost"]
 
 extra_allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
 if extra_allowed_hosts:
@@ -77,7 +78,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = ["FRONTEND", "http://localhost:5173"]
 
 ROOT_URLCONF = 'config.urls'
 
